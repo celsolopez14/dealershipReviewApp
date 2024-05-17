@@ -5,11 +5,11 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import com.dealershipreviewapp.dealershipreviewapp.entity.Dealership;
 import com.dealershipreviewapp.dealershipreviewapp.entity.Review;
+import com.dealershipreviewapp.dealershipreviewapp.entity.User;
 import com.dealershipreviewapp.dealershipreviewapp.exception.ReviewNotFoundException;
-import com.dealershipreviewapp.dealershipreviewapp.repository.DealershipRepository;
 import com.dealershipreviewapp.dealershipreviewapp.repository.ReviewRepository;
+import com.dealershipreviewapp.dealershipreviewapp.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -17,8 +17,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ReviewServiceImp implements ReviewService {
 
-    ReviewRepository reviewRepository;
-    DealershipRepository dealershipRepository;
+    private ReviewRepository reviewRepository;
+    private UserRepository userRepository;
 
     @Override
     public Set<Review> getAllReviews() {
@@ -26,17 +26,16 @@ public class ReviewServiceImp implements ReviewService {
     }
 
     @Override
-    public Review createReview(Review review, int dealershipId) {
-        Optional<Dealership> optionalDealership = dealershipRepository.findById(dealershipId);
-        Dealership unwrappedDealership = DealershipServiceImp.unwrappDealership(optionalDealership, dealershipId);
-        review.setDealership(unwrappedDealership);
+    public Review createReview(Review review, Long userId) {
+        User user = UserServiceImp.unwrappUser(userRepository.findById(userId), userId);
+        review.setUser(user);
         return reviewRepository.save(review);
     }
 
     @Override
-    public Review getReview(int dealershipId) {
-        Optional<Review> optionalReview = reviewRepository.getReviewByDealershipId(dealershipId);
-        return unwrappReview(optionalReview, dealershipId);
+    public Review getReview(String dealership) {
+        Optional<Review> optionalReview = reviewRepository.getReviewByDealership(dealership);
+        return unwrappReview(optionalReview, dealership);
     }
 
     @Override
@@ -45,12 +44,12 @@ public class ReviewServiceImp implements ReviewService {
     }
 
     @Override
-    public Set<Review> getReviewsByDealershipId(int dealershipId) {
-        return reviewRepository.getReviewsByDealershipId(dealershipId);
+    public Set<Review> getReviewsByDealership(String dealership) {
+        return reviewRepository.getReviewsByDealership(dealership);
     }
 
-    public static Review unwrappReview(Optional<Review> optionalReview, int id) {
+    public static Review unwrappReview(Optional<Review> optionalReview, String dealership) {
         if(optionalReview.isPresent()) return optionalReview.get();
-        throw new ReviewNotFoundException(id);
+        throw new ReviewNotFoundException(dealership);
     }
 }

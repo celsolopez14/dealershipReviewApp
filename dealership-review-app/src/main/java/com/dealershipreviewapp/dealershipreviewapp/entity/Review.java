@@ -9,7 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,13 +32,15 @@ public class Review {
     private Long id;
 
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "Name cannot be blank")
     private String name;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "dealership_id", referencedColumnName = "id")
-    private Dealership dealership;
+    @Column(name = "dealership", nullable = false)
+    @NotBlank(message = "Dealership cannot be blank")
+    private String dealership;
 
     @Column(name = "review", nullable = false)
+    @Size(min = 10, message = "Review must be at least 10 characters")
     private String review;
 
     @Column(name = "purchase", nullable = false)
@@ -55,5 +60,8 @@ public class Review {
 
     @Column(name = "created_at", nullable = false)
     private LocalDate createdAt = LocalDate.now();
-    
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }

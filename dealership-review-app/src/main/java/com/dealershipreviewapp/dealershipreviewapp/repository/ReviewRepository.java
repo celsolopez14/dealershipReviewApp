@@ -10,7 +10,7 @@ import com.dealershipreviewapp.dealershipreviewapp.entity.Review;
 public interface ReviewRepository extends CrudRepository<Review, Long> {
 
     Set<Review> findAll();
-    Optional<Review> getReviewByDealershipId(int dealershipId);
-    Set<Review> getReviewsByDealershipId(int dealershipId);
+    Optional<Review> getReviewByDealership(String dealership);
+    Set<Review> getReviewsByDealership(String dealership);
 
 }

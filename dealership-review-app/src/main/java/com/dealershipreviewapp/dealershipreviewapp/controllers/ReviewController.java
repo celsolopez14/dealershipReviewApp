@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dealershipreviewapp.dealershipreviewapp.entity.Review;
 import com.dealershipreviewapp.dealershipreviewapp.service.ReviewService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import java.util.Set;
@@ -21,24 +22,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/reviews")
+@RequestMapping("/review")
 public class ReviewController {
 
-    ReviewService reviewService;
-    @GetMapping("/")
+    private ReviewService reviewService;
+    @GetMapping("/all")
     public ResponseEntity<Set<Review>> getReviews() {
         Set<Review> allReviews = reviewService.getAllReviews();
         return new ResponseEntity<>(allReviews, HttpStatus.OK);
     }
 
-    @PostMapping("/review/{dealershipId}")
-    public ResponseEntity<Review> createReview(@RequestBody Review review, @PathVariable int dealershipId) {
-        return new ResponseEntity<>(reviewService.createReview(review, dealershipId), HttpStatus.CREATED);
+    @PostMapping("user/{userId}")
+    public ResponseEntity<Review> createReview(@Valid @RequestBody Review review, @PathVariable Long userId) {
+        return new ResponseEntity<>(reviewService.createReview(review, userId), HttpStatus.CREATED);
     }
 
-    @GetMapping("/dealership/{dealershipId}")
-    public ResponseEntity<Set<Review>> getReviewsFromDealership(@PathVariable int dealershipId) {
-        return new ResponseEntity<>(reviewService.getReviewsByDealershipId(dealershipId), HttpStatus.OK);
+    @GetMapping("/dealership/{dealershipId}/all")
+    public ResponseEntity<Set<Review>> getReviewsFromDealership(@PathVariable String dealership) {
+        return new ResponseEntity<>(reviewService.getReviewsByDealership(dealership), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -6,8 +6,8 @@ import com.dealershipreviewapp.dealershipreviewapp.entity.Review;
 
 public interface ReviewService {
     Set<Review> getAllReviews();
-    Set<Review> getReviewsByDealershipId(int dealershipId);
-    Review getReview(int dealershipId);
-    Review createReview(Review review, int dealershipId);
+    Set<Review> getReviewsByDealership(String dealership);
+    Review getReview(String dealership);
+    Review createReview(Review review, Long userId);
     void deleteReview(Long id);
 }
