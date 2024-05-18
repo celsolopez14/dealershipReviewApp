@@ -9,6 +9,7 @@ public interface ReviewService {
     Set<Review> getReviewsByDealership(String dealership);
     Set<Review> getReviewsByUser(Long userId);
     Review getReview(String dealership);
+    Review getReview(Long id);
     Review createReview(Review review, Long userId);
     void deleteReview(Long id);
 }

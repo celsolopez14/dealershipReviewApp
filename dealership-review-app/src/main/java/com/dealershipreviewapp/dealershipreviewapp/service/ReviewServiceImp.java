@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dealershipreviewapp.dealershipreviewapp.entity.Review;
 import com.dealershipreviewapp.dealershipreviewapp.entity.User;
+import com.dealershipreviewapp.dealershipreviewapp.exception.EntityNotFoundException;
 import com.dealershipreviewapp.dealershipreviewapp.exception.ReviewNotFoundException;
 import com.dealershipreviewapp.dealershipreviewapp.repository.ReviewRepository;
 import com.dealershipreviewapp.dealershipreviewapp.repository.UserRepository;
@@ -39,6 +40,12 @@ public class ReviewServiceImp implements ReviewService {
     }
 
     @Override
+    public Review getReview(Long id) {
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        return unwrappReview(optionalReview, id);
+    }
+
+    @Override
     public Set<Review> getReviewsByUser(Long userId) {
         return reviewRepository.getReviewsByUser(userId);
     }
@@ -56,5 +63,10 @@ public class ReviewServiceImp implements ReviewService {
     public static Review unwrappReview(Optional<Review> optionalReview, String dealership) {
         if(optionalReview.isPresent()) return optionalReview.get();
         throw new ReviewNotFoundException(dealership);
+    }
+
+    public static Review unwrappReview(Optional<Review> optionalReview, Long id) {
+        if(optionalReview.isPresent()) return optionalReview.get();
+        throw new EntityNotFoundException(id, Review.class);
     }
 }
