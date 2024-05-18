@@ -31,6 +31,12 @@ public class UserServiceImp implements UserService {
         return UserMapper.userToUserDTO(unwrappedUser);
     }
 
+    @Override
+    public User getUser(String username) {
+        User unwrappedUser = unwrappUser(userRepository.findByUsername(username), 404L);
+        return unwrappedUser;
+    }
+
     static User unwrappUser(Optional<User> entity, Long id) {
         if(entity.isPresent()) return entity.get();
         throw new EntityNotFoundException(id, User.class);

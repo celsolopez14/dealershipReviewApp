@@ -12,5 +12,7 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
     Set<Review> findAll();
     Optional<Review> getReviewByDealership(String dealership);
     Set<Review> getReviewsByDealership(String dealership);
+    Set<Review> getReviewsByUser(Long userId);
+
 
 }

@@ -6,4 +6,5 @@ import com.dealershipreviewapp.dealershipreviewapp.entity.User;
 public interface UserService {
     UserDTO saveUser(User user);
     UserDTO getUser(Long id);
+    User getUser(String username);
 }

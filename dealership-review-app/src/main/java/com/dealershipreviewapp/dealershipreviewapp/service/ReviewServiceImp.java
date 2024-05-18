@@ -39,6 +39,11 @@ public class ReviewServiceImp implements ReviewService {
     }
 
     @Override
+    public Set<Review> getReviewsByUser(Long userId) {
+        return reviewRepository.getReviewsByUser(userId);
+    }
+
+    @Override
     public void deleteReview(Long id) {
         reviewRepository.deleteById(id);
     }

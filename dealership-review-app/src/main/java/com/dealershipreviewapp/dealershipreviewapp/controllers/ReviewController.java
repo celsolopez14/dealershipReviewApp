@@ -37,6 +37,11 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.createReview(review, userId), HttpStatus.CREATED);
     }
 
+    @GetMapping("user/{userId}")
+    public ResponseEntity<Set<Review>> getReviewsFromUser(@PathVariable Long userId) {
+        return new ResponseEntity<>(reviewService.getReviewsByUser(userId), HttpStatus.OK);
+    }
+
     @GetMapping("/dealership/{dealershipId}/all")
     public ResponseEntity<Set<Review>> getReviewsFromDealership(@PathVariable String dealership) {
         return new ResponseEntity<>(reviewService.getReviewsByDealership(dealership), HttpStatus.OK);
